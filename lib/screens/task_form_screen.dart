@@ -65,6 +65,13 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
       appBar: AppBar(
         title: Text(_isEdit ? 'Edit Task' : 'New Task'),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            tooltip: _isEdit ? 'Save' : 'Create',
+            onPressed: _saveTask,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -87,10 +94,6 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                     value == null || value.isEmpty ? 'Add a description' : null,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _saveTask,
-                child: Text(_isEdit ? 'Save' : 'Create'),
-              ),
             ],
           ),
         ),

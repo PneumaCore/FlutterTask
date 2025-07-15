@@ -36,6 +36,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       appBar: AppBar(
         title: const Text('New Task'),
         backgroundColor: Theme.of(context).colorScheme.primary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            tooltip: 'Save',
+            onPressed: _saveTask,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,7 +66,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     : null,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(onPressed: _saveTask, child: const Text('Save')),
             ],
           ),
         ),

@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Task "${task.title}" deleted'),
+                        content: Text('Task "${task.title}" deleted.'),
                         action: SnackBarAction(
                           label: 'Undo',
                           onPressed: () {
