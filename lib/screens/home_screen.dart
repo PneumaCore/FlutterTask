@@ -16,7 +16,6 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tasks'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: tasks.isEmpty
           ? const Center(child: Text('There are no tasks yet.'))
@@ -44,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                     );
                   },
                   background: Container(
-                    color: Colors.red,
+                    color: Colors.red.shade400,
                     alignment: Alignment.centerRight,
                     padding: const EdgeInsets.only(right: 20),
                     child: const Icon(Icons.delete, color: Colors.white),
@@ -53,6 +52,7 @@ class HomeScreen extends StatelessWidget {
                     title: Text(
                       task.title,
                       style: TextStyle(
+                        fontWeight: FontWeight.bold,
                         decoration: task.isDone
                             ? TextDecoration.lineThrough
                             : TextDecoration.none,
@@ -64,6 +64,7 @@ class HomeScreen extends StatelessWidget {
                       onChanged: (_) {
                         taskProvider.toggleStatus(task.id);
                       },
+                      activeColor: Colors.red.shade400,
                     ),
                     onTap: () {
                       Navigator.push(

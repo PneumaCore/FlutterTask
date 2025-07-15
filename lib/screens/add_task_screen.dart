@@ -35,7 +35,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('New Task'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -62,7 +61,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 decoration: const InputDecoration(labelText: 'Description'),
                 maxLines: 3,
                 validator: (value) => value == null || value.isEmpty
-                    ? 'Write a description'
+                    ? 'Add a description'
                     : null,
               ),
               const SizedBox(height: 20),
