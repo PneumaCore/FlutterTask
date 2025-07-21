@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart';
 
 import '../models/task.dart';
 import '../providers/task_provider.dart';
@@ -16,6 +17,47 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  DateTime? _selectedDeadline;
+
+  Widget _buildDeadlinePicker() {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            _selectedDeadline == null
+                ? 'No deadline selected.'
+                : 'Deadline: ${DateFormat('dd-MM-yyyy').format(_selectedDeadline!)}',
+          ),
+        ),
+        TextButton(
+          child: const Text('Select deadline'),
+          onPressed: () async {
+            final picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime(2100),
+            );
+            if (picked != null) {
+              setState(() {
+                _selectedDeadline = picked;
+              });
+            }
+          },
+        ),
+        if (_selectedDeadline != null)
+        IconButton(
+          icon: const Icon(Icons.clear),
+          tooltip: 'Remove deadline',
+          onPressed: () {
+            setState(() {
+              _selectedDeadline = null;
+            });
+          },
+        ),
+      ],
+    );
+  }
 
   void _saveTask() {
     if (_formKey.currentState!.validate()) {
@@ -23,6 +65,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         id: const Uuid().v4(),
         title: _titleController.text.trim(),
         description: _descriptionController.text.trim(),
+        createdAt: DateTime.now(),
+        deadline: _selectedDeadline,
       );
 
       Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
@@ -60,10 +104,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 controller: _descriptionController,
                 decoration: const InputDecoration(labelText: 'Description'),
                 maxLines: 3,
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Add a description'
-                    : null,
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Add a description' : null,
               ),
+              _buildDeadlinePicker(),
               const SizedBox(height: 20),
             ],
           ),

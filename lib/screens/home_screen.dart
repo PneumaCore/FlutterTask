@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../providers/task_provider.dart';
 import 'add_task_screen.dart';
@@ -98,7 +99,21 @@ class HomeScreen extends StatelessWidget {
                                   : null,
                             ),
                           ),
-                          subtitle: Text(task.description),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                task.description,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (task.deadline != null)
+                                Text(
+                                  'Deadline: ${DateFormat('dd-MM-yyyy').format(task.deadline!)}',
+                                  style: const TextStyle(color: Colors.grey),
+                                ),
+                            ],
+                          ),
                           leading: Checkbox(
                             value: task.isDone,
                             onChanged: (_) {

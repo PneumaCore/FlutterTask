@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:intl/intl.dart';
 
 import '../models/task.dart';
 import '../providers/task_provider.dart';
@@ -19,6 +20,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
   late final bool _isEdit;
+  DateTime? _selectedDeadline;
 
   @override
   void initState() {
@@ -32,6 +34,48 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
     _descriptionController = TextEditingController(
       text: _isEdit ? widget.existingTask!.description : '',
     );
+
+    _selectedDeadline = _isEdit ? widget.existingTask!.deadline : null;
+  }
+
+  Widget _buildDeadlinePicker() {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            _selectedDeadline == null
+                ? 'No deadline selected.'
+                : 'Deadline: ${DateFormat('dd-MM-yyyy').format(_selectedDeadline!)}',
+          ),
+        ),
+        TextButton(
+          child: const Text('Select deadline'),
+          onPressed: () async {
+            final picked = await showDatePicker(
+              context: context,
+              initialDate: _selectedDeadline ?? DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime(2100),
+            );
+            if (picked != null) {
+              setState(() {
+                _selectedDeadline = picked;
+              });
+            }
+          },
+        ),
+        if (_selectedDeadline != null)
+        IconButton(
+          icon: const Icon(Icons.clear),
+          tooltip: 'Remove deadline',
+          onPressed: () {
+            setState(() {
+              _selectedDeadline = null;
+            });
+          },
+        ),
+      ],
+    );
   }
 
   void _saveTask() {
@@ -44,6 +88,8 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
           isDone: widget.existingTask!.isDone,
+          createdAt: widget.existingTask!.createdAt,
+          deadline: _selectedDeadline,
         );
         taskProvider.updateTask(widget.existingTask!.id, updatedTask);
       } else {
@@ -51,6 +97,8 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
           id: const Uuid().v4(),
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
+          createdAt: DateTime.now(),
+          deadline: _selectedDeadline,
         );
         taskProvider.addTask(newTask);
       }
@@ -92,6 +140,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                 validator: (value) =>
                     value == null || value.isEmpty ? 'Add a description' : null,
               ),
+              _buildDeadlinePicker(),
               const SizedBox(height: 20),
             ],
           ),
