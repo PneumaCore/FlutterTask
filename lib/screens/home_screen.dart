@@ -16,6 +16,28 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tasks'),
+        actions: [
+          PopupMenuButton<TaskFilter>(
+            onSelected: (filter) {
+              Provider.of<TaskProvider>(
+                context,
+                listen: false,
+              ).setFilter(filter);
+            },
+            icon: const Icon(Icons.filter_list),
+            itemBuilder: (context) => [
+              const PopupMenuItem(value: TaskFilter.all, child: Text('All')),
+              const PopupMenuItem(
+                value: TaskFilter.completed,
+                child: Text('Completed'),
+              ),
+              const PopupMenuItem(
+                value: TaskFilter.pending,
+                child: Text('Pending'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: tasks.isEmpty
           ? const Center(child: Text('There are no tasks yet.'))
