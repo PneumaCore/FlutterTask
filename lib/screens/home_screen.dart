@@ -39,67 +39,88 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: tasks.isEmpty
-          ? const Center(child: Text('There are no tasks yet.'))
-          : ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                final task = tasks[index];
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: const InputDecoration(
+                labelText: 'Search tasks...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                Provider.of<TaskProvider>(
+                  context,
+                  listen: false,
+                ).setSearchQuery(value);
+              },
+            ),
+          ),
+          Expanded(
+            child: tasks.isEmpty
+                ? const Center(child: Text('There are no tasks yet.'))
+                : ListView.builder(
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      final task = tasks[index];
 
-                return Dismissible(
-                  key: Key(task.id),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    taskProvider.deleteTask(task.id);
+                      return Dismissible(
+                        key: Key(task.id),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (_) {
+                          taskProvider.deleteTask(task.id);
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Task "${task.title}" deleted.'),
-                        action: SnackBarAction(
-                          label: 'Undo',
-                          onPressed: () {
-                            taskProvider.addTask(task);
-                          },
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Task "${task.title}" deleted.'),
+                              action: SnackBarAction(
+                                label: 'Undo',
+                                onPressed: () {
+                                  taskProvider.addTask(task);
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        background: Container(
+                          color: Colors.red.shade400,
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          child: const Icon(Icons.delete, color: Colors.white),
                         ),
-                      ),
-                    );
-                  },
-                  background: Container(
-                    color: Colors.red.shade400,
-                    alignment: Alignment.centerRight,
-                    padding: const EdgeInsets.only(right: 20),
-                    child: const Icon(Icons.delete, color: Colors.white),
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      task.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        decoration: task.isDone
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
-                      ),
-                    ),
-                    subtitle: Text(task.description),
-                    leading: Checkbox(
-                      value: task.isDone,
-                      onChanged: (_) {
-                        taskProvider.toggleStatus(task.id);
-                      },
-                      activeColor: Colors.red.shade400,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => TaskFormScreen(existingTask: task),
+                        child: ListTile(
+                          title: Text(
+                            task.title,
+                            style: TextStyle(
+                              decoration: task.isDone
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                            ),
+                          ),
+                          subtitle: Text(task.description),
+                          leading: Checkbox(
+                            value: task.isDone,
+                            onChanged: (_) {
+                              taskProvider.toggleStatus(task.id);
+                            },
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    TaskFormScreen(existingTask: task),
+                              ),
+                            );
+                          },
                         ),
                       );
                     },
                   ),
-                );
-              },
-            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
