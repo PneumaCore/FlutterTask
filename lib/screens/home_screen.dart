@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                           );
                         },
                         background: Container(
-                          color: Colors.red.shade400,
+                          color: Theme.of(context).colorScheme.error,
                           alignment: Alignment.centerRight,
                           padding: const EdgeInsets.only(right: 20),
                           child: const Icon(Icons.delete, color: Colors.white),
@@ -110,7 +110,11 @@ class HomeScreen extends StatelessWidget {
                               if (task.deadline != null)
                                 Text(
                                   'Deadline: ${DateFormat('dd-MM-yyyy').format(task.deadline!)}',
-                                  style: const TextStyle(color: Colors.grey),
+                                  style: TextStyle(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                  ),
                                 ),
                             ],
                           ),

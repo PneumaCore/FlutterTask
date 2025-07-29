@@ -6,16 +6,17 @@ import 'screens/home_screen.dart';
 
 // Main colors of the task manager app.
 const Color lightBackgroundColor = Color(0xFFF5F5F5);
-const Color lightAppBarColor = Color(0xFF9C7CC3);
-const Color lightPrimaryColor = Color(0xFFB99AD9);
-const Color lightSecondaryColor = Color(0xFFD5F26D);
-const Color lightTileColor = Color(0xFFFFFFFF);
+const Color lightAppBarColor = Color(0xFF99D0F2);
+const Color lightPrimaryColor = Color(0xFF2B88D9);
+const Color lightSecondaryColor = Color(0xFFF2B705);
+const Color lightTileColor = Color(0xFFFFE08A);
+const Color lightErrorColor = Color(0xFFE05A4F);
 const Color darkBackgroundColor = Color(0xFF121212);
-const Color darkAppBarColor = Color(0xFF3A2D4D);
-const Color darkPrimaryColor = Color(0xFF6B4C99);
-const Color darkSecondaryColor = Color(0xFF8AA133);
-const Color darkTileColor = Color(0xFF1E1E1E);
-
+const Color darkAppBarColor = Color(0xFF457CA0);
+const Color darkPrimaryColor = Color(0xFF1766AD);
+const Color darkSecondaryColor = Color(0xFF8C6E00);
+const Color darkTileColor = Color(0xFF6B5500);
+const Color darkErrorColor = Color(0xFFB53A30);
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
           onSecondary: Colors.black,
           surface: Colors.white,
           onSurface: Colors.black87,
-          error: Colors.red.shade700,
+          error: lightErrorColor,
           onError: Colors.white,
         ),
         appBarTheme: AppBarTheme(
@@ -83,6 +84,23 @@ class MyApp extends StatelessWidget {
           tileColor: lightTileColor,
           textColor: Colors.black87,
         ),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.black87),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1.5),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: lightErrorColor, width: 1.5),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: lightErrorColor, width: 1.5),
+          ),
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -94,7 +112,7 @@ class MyApp extends StatelessWidget {
           onSecondary: Colors.black87,
           surface: Color(0xFF1E1E1E),
           onSurface: Colors.white70,
-          error: Colors.red.shade400,
+          error: darkErrorColor,
           onError: Colors.black,
         ),
         appBarTheme: AppBarTheme(
@@ -134,6 +152,23 @@ class MyApp extends StatelessWidget {
         listTileTheme: ListTileThemeData(
           tileColor: darkTileColor,
           textColor: Colors.white70,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(color: Colors.white70),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1.5),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey, width: 1.5),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: darkErrorColor, width: 1.5),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: darkErrorColor, width: 1.5),
+          ),
         ),
       ),
       themeMode: ThemeMode.system,
