@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -75,6 +76,100 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Total: ${taskProvider.tasks.length} | Pending: ${taskProvider.tasks.where((t) => !t.isDone).length} | Completed: ${taskProvider.tasks.where((t) => t.isDone).length}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              height: 200,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  PieChart(
+                    PieChartData(
+                      sections: [
+                        PieChartSectionData(
+                          value: taskProvider.tasks
+                              .where((t) => t.isDone)
+                              .length
+                              .toDouble(),
+                          color:
+                              (taskProvider.tasks.isNotEmpty &&
+                                  taskProvider.tasks
+                                          .where((t) => t.isDone)
+                                          .length ==
+                                      taskProvider.tasks.length)
+                              ? Theme.of(context).brightness == Brightness.dark
+                                    ? const Color(0xFF4CAF50)
+                                    : const Color(0xFF43A047)
+                              : Theme.of(context).colorScheme.secondary,
+                          title: '',
+                          radius: 55,
+                        ),
+                        PieChartSectionData(
+                          value:
+                              (taskProvider.tasks.length -
+                                      taskProvider.tasks
+                                          .where((t) => t.isDone)
+                                          .length)
+                                  .toDouble(),
+                          color: Theme.of(context).colorScheme.surface,
+                          title: '',
+                          radius: 55,
+                        ),
+                      ],
+                      sectionsSpace: 2,
+                      centerSpaceRadius: 45,
+                    ),
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  ),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween<double>(
+                      begin: 0,
+                      end: taskProvider.tasks.isEmpty
+                          ? 0
+                          : (taskProvider.tasks.where((t) => t.isDone).length /
+                                    taskProvider.tasks.length) *
+                                100,
+                    ),
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                    builder: (context, value, child) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${value.toStringAsFixed(0)}%',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          Text(
+                            'Completed',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
