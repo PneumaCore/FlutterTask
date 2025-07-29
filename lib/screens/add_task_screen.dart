@@ -68,7 +68,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           child: Text(
             _selectedDeadline == null
                 ? 'No deadline selected.'
-                : 'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(_selectedDeadline!)}',
+                : 'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(_selectedDeadline!)}.',
           ),
         ),
         TextButton(

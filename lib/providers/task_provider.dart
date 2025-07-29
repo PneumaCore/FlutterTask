@@ -5,18 +5,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/task.dart';
 
+enum SortType { creationDateAsc, creationDateDesc, deadlineAsc, deadlineDesc }
+
 enum TaskFilter { all, completed, pending }
 
 class TaskProvider with ChangeNotifier {
   List<Task> _tasks = [];
   TaskFilter _filter = TaskFilter.all;
   String _searchQuery = '';
+  SortType _sortType = SortType.creationDateDesc;
 
   TaskProvider() {
     _init();
   }
 
   TaskFilter get filter => _filter;
+
+  SortType get sortType => _sortType;
 
   List<Task> get tasks {
     List<Task> filtered = [];
@@ -81,6 +86,12 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setSortType(SortType type) {
+    _sortType = type;
+    _sortTasks();
+    notifyListeners();
+  }
+
   void toggleStatus(String id) {
     final task = _tasks.firstWhere((task) => task.id == id);
     task.isDone = !task.isDone;
@@ -100,5 +111,30 @@ class TaskProvider with ChangeNotifier {
   Future<void> _init() async {
     await loadTasks();
     notifyListeners();
+  }
+
+  void _sortTasks() {
+    switch (_sortType) {
+      case SortType.creationDateAsc:
+        _tasks.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+        break;
+      case SortType.creationDateDesc:
+        _tasks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+        break;
+      case SortType.deadlineAsc:
+        _tasks.sort((a, b) {
+          if (a.deadline == null) return 1;
+          if (b.deadline == null) return -1;
+          return a.deadline!.compareTo(b.deadline!);
+        });
+        break;
+      case SortType.deadlineDesc:
+        _tasks.sort((a, b) {
+          if (a.deadline == null) return 1;
+          if (b.deadline == null) return -1;
+          return b.deadline!.compareTo(a.deadline!);
+        });
+        break;
+    }
   }
 }

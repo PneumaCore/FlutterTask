@@ -18,23 +18,56 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Tasks'),
         actions: [
-          PopupMenuButton<TaskFilter>(
-            onSelected: (filter) {
-              Provider.of<TaskProvider>(
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              final taskProvider = Provider.of<TaskProvider>(
                 context,
                 listen: false,
-              ).setFilter(filter);
+              );
+              if (value.startsWith('filter_')) {
+                final filter =
+                    TaskFilter.values[int.parse(value.split('_')[1])];
+                taskProvider.setFilter(filter);
+              } else if (value.startsWith('sort_')) {
+                final sort = SortType.values[int.parse(value.split('_')[1])];
+                taskProvider.setSortType(sort);
+              }
             },
             icon: const Icon(Icons.filter_list),
             itemBuilder: (context) => [
-              const PopupMenuItem(value: TaskFilter.all, child: Text('All')),
               const PopupMenuItem(
-                value: TaskFilter.completed,
-                child: Text('Completed'),
+                enabled: false,
+                child: Text(
+                  '--- Filter Tasks ---',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              const PopupMenuItem(value: 'filter_0', child: Text('All')),
+              const PopupMenuItem(value: 'filter_1', child: Text('Completed')),
+              const PopupMenuItem(value: 'filter_2', child: Text('Pending')),
+              const PopupMenuDivider(),
+              const PopupMenuItem(
+                enabled: false,
+                child: Text(
+                  '--- Order Tasks ---',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               const PopupMenuItem(
-                value: TaskFilter.pending,
-                child: Text('Pending'),
+                value: 'sort_0',
+                child: Text('Creation (recent)'),
+              ),
+              const PopupMenuItem(
+                value: 'sort_1',
+                child: Text('Creation (oldest)'),
+              ),
+              const PopupMenuItem(
+                value: 'sort_2',
+                child: Text('Deadline (nearby)'),
+              ),
+              const PopupMenuItem(
+                value: 'sort_3',
+                child: Text('Deadline (distant)'),
               ),
             ],
           ),
@@ -107,15 +140,19 @@ class HomeScreen extends StatelessWidget {
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              if (task.deadline != null)
-                                Text(
-                                  'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(task.deadline!)}',
-                                  style: TextStyle(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                  ),
+                              Text(
+                                task.deadline != null
+                                    ? 'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(task.deadline!)}.'
+                                    : 'No deadline set.',
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                  fontStyle: task.deadline == null
+                                      ? FontStyle.italic
+                                      : FontStyle.normal,
                                 ),
+                              ),
                             ],
                           ),
                           leading: Checkbox(
