@@ -1,13 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/task.dart';
 
 enum TaskFilter { all, completed, pending }
 
 class TaskProvider with ChangeNotifier {
-  final List<Task> _tasks = [];
+  List<Task> _tasks = [];
   TaskFilter _filter = TaskFilter.all;
   String _searchQuery = '';
+
+  TaskProvider() {
+    _init();
+  }
 
   TaskFilter get filter => _filter;
 
@@ -37,12 +44,31 @@ class TaskProvider with ChangeNotifier {
 
   void addTask(Task task) {
     _tasks.add(task);
+    saveTasks();
     notifyListeners();
   }
 
   void deleteTask(String id) {
     _tasks.removeWhere((task) => task.id == id);
+    saveTasks();
     notifyListeners();
+  }
+
+  Future<void> loadTasks() async {
+    final prefs = await SharedPreferences.getInstance();
+    final tasksString = prefs.getString('tasks');
+
+    if (tasksString != null) {
+      final List<dynamic> decoded = jsonDecode(tasksString);
+      _tasks = decoded.map((item) => Task.fromMap(item)).toList();
+      notifyListeners();
+    }
+  }
+
+  Future<void> saveTasks() async {
+    final prefs = await SharedPreferences.getInstance();
+    final tasksString = jsonEncode(_tasks.map((t) => t.toMap()).toList());
+    await prefs.setString('tasks', tasksString);
   }
 
   void setFilter(TaskFilter filter) {
@@ -58,6 +84,7 @@ class TaskProvider with ChangeNotifier {
   void toggleStatus(String id) {
     final task = _tasks.firstWhere((task) => task.id == id);
     task.isDone = !task.isDone;
+    saveTasks();
     notifyListeners();
   }
 
@@ -65,7 +92,13 @@ class TaskProvider with ChangeNotifier {
     final index = _tasks.indexWhere((task) => task.id == id);
     if (index != -1) {
       _tasks[index] = updatedTask;
+      saveTasks();
       notifyListeners();
     }
+  }
+
+  Future<void> _init() async {
+    await loadTasks();
+    notifyListeners();
   }
 }

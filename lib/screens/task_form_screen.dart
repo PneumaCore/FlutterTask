@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:intl/intl.dart';
 
 import '../models/task.dart';
 import '../providers/task_provider.dart';
@@ -21,6 +21,48 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
   late final TextEditingController _descriptionController;
   late final bool _isEdit;
   DateTime? _selectedDeadline;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_isEdit ? 'Edit Task' : 'New Task'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            tooltip: _isEdit ? 'Save' : 'Create',
+            onPressed: _saveTask,
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Add a title' : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
+                maxLines: 3,
+                validator: (value) =>
+                    value == null || value.isEmpty ? 'Add a description' : null,
+              ),
+              _buildDeadlinePicker(),
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -65,15 +107,15 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
           },
         ),
         if (_selectedDeadline != null)
-        IconButton(
-          icon: const Icon(Icons.clear),
-          tooltip: 'Remove deadline',
-          onPressed: () {
-            setState(() {
-              _selectedDeadline = null;
-            });
-          },
-        ),
+          IconButton(
+            icon: const Icon(Icons.clear),
+            tooltip: 'Remove deadline',
+            onPressed: () {
+              setState(() {
+                _selectedDeadline = null;
+              });
+            },
+          ),
       ],
     );
   }
@@ -105,47 +147,5 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
 
       Navigator.pop(context);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_isEdit ? 'Edit Task' : 'New Task'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            tooltip: _isEdit ? 'Save' : 'Create',
-            onPressed: _saveTask,
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Add a title' : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
-                maxLines: 3,
-                validator: (value) =>
-                    value == null || value.isEmpty ? 'Add a description' : null,
-              ),
-              _buildDeadlinePicker(),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

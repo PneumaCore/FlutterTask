@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-import 'package:intl/intl.dart';
 
 import '../models/task.dart';
 import '../providers/task_provider.dart';
@@ -18,61 +18,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   DateTime? _selectedDeadline;
-
-  Widget _buildDeadlinePicker() {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            _selectedDeadline == null
-                ? 'No deadline selected.'
-                : 'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(_selectedDeadline!)}',
-          ),
-        ),
-        TextButton(
-          child: const Text('Select deadline'),
-          onPressed: () async {
-            final picked = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now(),
-              lastDate: DateTime(2100),
-            );
-            if (picked != null) {
-              setState(() {
-                _selectedDeadline = picked;
-              });
-            }
-          },
-        ),
-        if (_selectedDeadline != null)
-        IconButton(
-          icon: const Icon(Icons.clear),
-          tooltip: 'Remove deadline',
-          onPressed: () {
-            setState(() {
-              _selectedDeadline = null;
-            });
-          },
-        ),
-      ],
-    );
-  }
-
-  void _saveTask() {
-    if (_formKey.currentState!.validate()) {
-      final newTask = Task(
-        id: const Uuid().v4(),
-        title: _titleController.text.trim(),
-        description: _descriptionController.text.trim(),
-        createdAt: DateTime.now(),
-        deadline: _selectedDeadline,
-      );
-
-      Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
-      Navigator.pop(context);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,5 +59,60 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildDeadlinePicker() {
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            _selectedDeadline == null
+                ? 'No deadline selected.'
+                : 'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(_selectedDeadline!)}',
+          ),
+        ),
+        TextButton(
+          child: const Text('Select deadline'),
+          onPressed: () async {
+            final picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime(2100),
+            );
+            if (picked != null) {
+              setState(() {
+                _selectedDeadline = picked;
+              });
+            }
+          },
+        ),
+        if (_selectedDeadline != null)
+          IconButton(
+            icon: const Icon(Icons.clear),
+            tooltip: 'Remove deadline',
+            onPressed: () {
+              setState(() {
+                _selectedDeadline = null;
+              });
+            },
+          ),
+      ],
+    );
+  }
+
+  void _saveTask() {
+    if (_formKey.currentState!.validate()) {
+      final newTask = Task(
+        id: const Uuid().v4(),
+        title: _titleController.text.trim(),
+        description: _descriptionController.text.trim(),
+        createdAt: DateTime.now(),
+        deadline: _selectedDeadline,
+      );
+
+      Provider.of<TaskProvider>(context, listen: false).addTask(newTask);
+      Navigator.pop(context);
+    }
   }
 }

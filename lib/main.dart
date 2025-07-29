@@ -4,19 +4,6 @@ import 'package:provider/provider.dart';
 import 'providers/task_provider.dart';
 import 'screens/home_screen.dart';
 
-// Main colors of the task manager app.
-const Color lightBackgroundColor = Color(0xFFF5F5F5);
-const Color lightAppBarColor = Color(0xFF99D0F2);
-const Color lightPrimaryColor = Color(0xFF2B88D9);
-const Color lightSecondaryColor = Color(0xFFF2B705);
-const Color lightTileColor = Color(0xFFFFE08A);
-const Color lightErrorColor = Color(0xFFE05A4F);
-const Color darkBackgroundColor = Color(0xFF121212);
-const Color darkAppBarColor = Color(0xFF457CA0);
-const Color darkPrimaryColor = Color(0xFF1766AD);
-const Color darkSecondaryColor = Color(0xFF8C6E00);
-const Color darkTileColor = Color(0xFF6B5500);
-const Color darkErrorColor = Color(0xFFB53A30);
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -25,6 +12,20 @@ void main() {
     ),
   );
 }
+
+// Main colors of the task manager app.
+const Color darkAppBarColor = Color(0xFF457CA0);
+const Color darkBackgroundColor = Color(0xFF121212);
+const Color darkErrorColor = Color(0xFFB53A30);
+const Color darkPrimaryColor = Color(0xFF1766AD);
+const Color darkSecondaryColor = Color(0xFF8C6E00);
+const Color darkTileColor = Color(0xFF6B5500);
+const Color lightAppBarColor = Color(0xFF99D0F2);
+const Color lightBackgroundColor = Color(0xFFF5F5F5);
+const Color lightErrorColor = Color(0xFFE05A4F);
+const Color lightPrimaryColor = Color(0xFF2B88D9);
+const Color lightSecondaryColor = Color(0xFFF2B705);
+const Color lightTileColor = Color(0xFFFFE08A);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
