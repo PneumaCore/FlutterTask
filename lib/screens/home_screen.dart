@@ -109,7 +109,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               if (task.deadline != null)
                                 Text(
-                                  'Deadline: ${DateFormat('dd-MM-yyyy').format(task.deadline!)}',
+                                  'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(task.deadline!)}',
                                   style: TextStyle(
                                     color: Theme.of(
                                       context,
