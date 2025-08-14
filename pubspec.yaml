@@ -51,6 +51,16 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
+   # The following adds the Flutter Launcher Icons dependency.
+  flutter_launcher_icons: ^0.14.4
+
+# The following section is specific to Flutter Launcher Icons.
+# It is used to configure the launcher icons for your Flutter application.
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/Note.png"
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
