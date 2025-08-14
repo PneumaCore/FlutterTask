@@ -34,6 +34,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FlutterTask',
+
+      // Setting the theme for the app.
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: lightBackgroundColor,
@@ -103,6 +105,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+
+      // Setting the dark theme for the app.
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         scaffoldBackgroundColor: darkBackgroundColor,

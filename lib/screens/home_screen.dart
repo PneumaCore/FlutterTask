@@ -19,6 +19,8 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Tasks'),
         actions: [
+
+          // Popup menu for filtering and sorting tasks.
           PopupMenuButton<String>(
             onSelected: (value) {
               final taskProvider = Provider.of<TaskProvider>(
@@ -78,6 +80,8 @@ class HomeScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
+
+            // Displaying the total, pending, and completed tasks.
             child: Text(
               'Total: ${taskProvider.tasks.length} | Pending: ${taskProvider.tasks.where((t) => !t.isDone).length} | Completed: ${taskProvider.tasks.where((t) => t.isDone).length}',
               style: TextStyle(
@@ -92,6 +96,8 @@ class HomeScreen extends StatelessWidget {
               height: 200,
               child: Stack(
                 alignment: Alignment.center,
+
+                // Pie chart showing the percentage of completed tasks.
                 children: [
                   PieChart(
                     PieChartData(
@@ -172,6 +178,8 @@ class HomeScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
+
+            // Search bar to filter tasks by title or description.
             child: TextField(
               decoration: const InputDecoration(
                 labelText: 'Search tasks...',
@@ -194,6 +202,7 @@ class HomeScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final task = tasks[index];
 
+                      // Dismissible widget to allow swiping to delete tasks.
                       return Dismissible(
                         key: Key(task.id),
                         direction: DismissDirection.endToStart,
@@ -218,6 +227,8 @@ class HomeScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 20),
                           child: const Icon(Icons.delete, color: Colors.white),
                         ),
+
+                        // Displaying task details in a ListTile.
                         child: ListTile(
                           title: Text(
                             task.title,
@@ -230,6 +241,8 @@ class HomeScreen extends StatelessWidget {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+
+                              // Displaying task description and deadline.
                               Text(
                                 task.description,
                                 maxLines: 3,
@@ -257,6 +270,8 @@ class HomeScreen extends StatelessWidget {
                             },
                           ),
                           onTap: () {
+
+                            // Navigate to the task form screen to edit the task.
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -272,6 +287,8 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+
+      // Floating action button to add a new task.
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

@@ -61,6 +61,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
+  // Widget to build the deadline picker.
   Widget _buildDeadlinePicker() {
     return Row(
       children: [
@@ -101,6 +102,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
+  // Method to save the new task.
   void _saveTask() {
     if (_formKey.currentState!.validate()) {
       final newTask = Task(

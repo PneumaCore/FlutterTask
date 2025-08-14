@@ -23,9 +23,11 @@ class TaskProvider with ChangeNotifier {
 
   SortType get sortType => _sortType;
 
+  // Getter for search query.
   List<Task> get tasks {
     List<Task> filtered = [];
 
+    // Apply sorting based on the current sort type.
     switch (_filter) {
       case TaskFilter.all:
         filtered = [..._tasks];
@@ -47,18 +49,21 @@ class TaskProvider with ChangeNotifier {
     return filtered;
   }
 
+  // Getter for the number of tasks.
   void addTask(Task task) {
     _tasks.add(task);
     saveTasks();
     notifyListeners();
   }
 
+  // Method to delete a task by its ID.
   void deleteTask(String id) {
     _tasks.removeWhere((task) => task.id == id);
     saveTasks();
     notifyListeners();
   }
 
+  // Method to load tasks from SharedPreferences.
   Future<void> loadTasks() async {
     final prefs = await SharedPreferences.getInstance();
     final tasksString = prefs.getString('tasks');
@@ -70,28 +75,33 @@ class TaskProvider with ChangeNotifier {
     }
   }
 
+  // Method to save tasks to SharedPreferences.
   Future<void> saveTasks() async {
     final prefs = await SharedPreferences.getInstance();
     final tasksString = jsonEncode(_tasks.map((t) => t.toMap()).toList());
     await prefs.setString('tasks', tasksString);
   }
 
+  // Method to set the filter type.
   void setFilter(TaskFilter filter) {
     _filter = filter;
     notifyListeners();
   }
 
+  // Method to set the search query.
   void setSearchQuery(String query) {
     _searchQuery = query.toLowerCase();
     notifyListeners();
   }
 
+  // Method to set the sort type.
   void setSortType(SortType type) {
     _sortType = type;
     _sortTasks();
     notifyListeners();
   }
 
+  // Method to toggle the status of a task by its ID.
   void toggleStatus(String id) {
     final task = _tasks.firstWhere((task) => task.id == id);
     task.isDone = !task.isDone;
@@ -99,6 +109,7 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Method to update a task by its ID.
   void updateTask(String id, Task updatedTask) {
     final index = _tasks.indexWhere((task) => task.id == id);
     if (index != -1) {
@@ -108,11 +119,13 @@ class TaskProvider with ChangeNotifier {
     }
   }
 
+  // Method to initialize the provider.
   Future<void> _init() async {
     await loadTasks();
     notifyListeners();
   }
 
+  // Method to sort tasks based on the current sort type.
   void _sortTasks() {
     switch (_sortType) {
       case SortType.creationDateAsc:

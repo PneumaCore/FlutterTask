@@ -15,6 +15,7 @@ class Task {
     this.deadline,
   });
 
+  // Factory method to create a Task from a map.
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
       id: map['id'],
@@ -28,6 +29,7 @@ class Task {
     );
   }
 
+  // Method to convert a Task to a map.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
