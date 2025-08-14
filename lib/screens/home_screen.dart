@@ -89,7 +89,7 @@ class HomeScreen extends StatelessWidget {
 
                   // Displaying the total, pending, and completed tasks.
                   child: Text(
-                    'Total: ${taskProvider.tasks.length} | Pending: ${taskProvider.tasks.where((t) => !t.isDone).length} | Completed: ${taskProvider.tasks.where((t) => t.isDone).length}',
+                    'Total: ${taskProvider.tasks.length} | Pending: ${taskProvider.tasks.where((t) => !t.isDone).length} | Completed: ${taskProvider.tasks.where((t) => t.isDone).length} | Expired: ${taskProvider.tasks.where((t) => t.deadline != null && t.deadline!.isBefore(DateTime.now()) && !t.isDone).length}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.primary,
