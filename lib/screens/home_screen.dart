@@ -78,19 +78,29 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          SizedBox(
+            width: double.infinity,
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              padding: const EdgeInsets.all(8.0),
+              child: Padding(
+                padding: EdgeInsets.zero,
+                child: Center(
 
-            // Displaying the total, pending, and completed tasks.
-            child: Text(
-              'Total: ${taskProvider.tasks.length} | Pending: ${taskProvider.tasks.where((t) => !t.isDone).length} | Completed: ${taskProvider.tasks.where((t) => t.isDone).length}',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
+                  // Displaying the total, pending, and completed tasks.
+                  child: Text(
+                    'Total: ${taskProvider.tasks.length} | Pending: ${taskProvider.tasks.where((t) => !t.isDone).length} | Completed: ${taskProvider.tasks.where((t) => t.isDone).length}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
-          Padding(
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
             padding: const EdgeInsets.all(16.0),
             child: SizedBox(
               height: 200,
@@ -176,22 +186,26 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
             padding: const EdgeInsets.all(8.0),
+            child: Padding(
+              padding: EdgeInsets.zero,
 
-            // Search bar to filter tasks by title or description.
-            child: TextField(
-              decoration: const InputDecoration(
-                labelText: 'Search tasks...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+              // Search bar to filter tasks by title or description.
+              child: TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Search tasks...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  Provider.of<TaskProvider>(
+                    context,
+                    listen: false,
+                  ).setSearchQuery(value);
+                },
               ),
-              onChanged: (value) {
-                Provider.of<TaskProvider>(
-                  context,
-                  listen: false,
-                ).setSearchQuery(value);
-              },
             ),
           ),
           Expanded(
