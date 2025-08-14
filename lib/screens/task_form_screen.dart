@@ -94,10 +94,15 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
         TextButton(
           child: const Text('Select deadline'),
           onPressed: () async {
+            final today = DateTime.now();
+            final initialDate =
+                _selectedDeadline != null && _selectedDeadline!.isAfter(today)
+                ? _selectedDeadline!
+                : today;
             final picked = await showDatePicker(
               context: context,
-              initialDate: _selectedDeadline ?? DateTime.now(),
-              firstDate: DateTime.now(),
+              initialDate: initialDate,
+              firstDate: today,
               lastDate: DateTime(2100),
             );
             if (picked != null) {

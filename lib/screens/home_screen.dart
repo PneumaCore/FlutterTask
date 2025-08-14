@@ -215,6 +215,10 @@ class HomeScreen extends StatelessWidget {
                     itemCount: tasks.length,
                     itemBuilder: (context, index) {
                       final task = tasks[index];
+                      final isExpired =
+                          task.deadline != null &&
+                          task.deadline!.isBefore(DateTime.now()) &&
+                          !task.isDone;
 
                       // Dismissible widget to allow swiping to delete tasks.
                       return Dismissible(
@@ -244,6 +248,13 @@ class HomeScreen extends StatelessWidget {
 
                         // Displaying task details in a ListTile.
                         child: ListTile(
+                          tileColor: isExpired
+                              ? Theme.of(
+                                  context,
+                                  
+                                // ignore: deprecated_member_use
+                                ).colorScheme.error.withOpacity(0.8)
+                              : null,
                           title: Text(
                             task.title,
                             style: TextStyle(
@@ -264,7 +275,9 @@ class HomeScreen extends StatelessWidget {
                               ),
                               Text(
                                 task.deadline != null
-                                    ? 'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(task.deadline!)}.'
+                                    ? isExpired
+                                          ? 'Expired: ${DateFormat('d MMMM, yyyy', 'en_US').format(task.deadline!)}.'
+                                          : 'Deadline: ${DateFormat('d MMMM, yyyy', 'en_US').format(task.deadline!)}.'
                                     : 'No deadline set.',
                                 style: TextStyle(
                                   color: Theme.of(
@@ -279,12 +292,14 @@ class HomeScreen extends StatelessWidget {
                           ),
                           leading: Checkbox(
                             value: task.isDone,
-                            onChanged: (_) {
-                              taskProvider.toggleStatus(task.id);
-                            },
+                            onChanged: isExpired
+                                ? null
+                                : (_) {
+                                    taskProvider.toggleStatus(task.id);
+                                  },
                           ),
                           onTap: () {
-
+                            
                             // Navigate to the task form screen to edit the task.
                             Navigator.push(
                               context,
