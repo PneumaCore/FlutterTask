@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         listTileTheme: ListTileThemeData(
-          tileColor: lightTileColor,
+          tileColor: Colors.white,
           textColor: Colors.black87,
         ),
         inputDecorationTheme: InputDecorationTheme(
@@ -155,7 +155,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         listTileTheme: ListTileThemeData(
-          tileColor: darkTileColor,
+          tileColor: Colors.black,
           textColor: Colors.white70,
         ),
         inputDecorationTheme: InputDecorationTheme(

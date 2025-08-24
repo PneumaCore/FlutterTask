@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/lucia/Documentos/GitHub/FlutterTask/linux"
+    "cmake.sourceDirectory": "D:/lucia/Documentos/GitHub/FlutterTask/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

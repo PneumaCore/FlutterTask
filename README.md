@@ -1,16 +1,57 @@
-# fluttertask
+# FlutterTask
 
-A new Flutter project.
+<p align="center">
+  <img src="assets/documentation/FlutterTask_Logo.png" alt="FlutterTask Logo" />
+</p>
 
-## Getting Started
+FlutterTask is a mobile app built with Flutter and Dart to help users manage their tasks efficiently. Users can create tasks, mark them as completed, view pending and completed tasks, filter them by date, and check if any tasks are expired.
 
-This project is a starting point for a Flutter application.
+## Used technologies
 
-A few resources to get you started if this is your first Flutter project:
+- [**Flutter:**](https://flutter.dev/) A modern UI toolkit for building cross-platform mobile, web, and desktop applications from a single codebase.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [**Dart:**](https://dart.dev/) A client-optimized language for fast apps on any platform, primarily used with Flutter.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Characteristics
+
+- Create, edit, and delete tasks.
+- Mark tasks as completed or pending.
+- View tasks by status: pending or completed.
+- Filter tasks by date or deadline.
+- Visual indicators for overdue tasks.
+- Clear and intuitive user interface.
+- Responsive layout for different device sizes.
+- Light and fast performance.
+- Dark mode support.
+
+## Prototype
+
+<p align="center">
+  <img src="assets/documentation/FlutterTask_Prototype.png" alt="FlutterTask Prototype" />
+</p>
+
+## Installation
+
+### For users
+
+#### 1. Download APK file from [releases section](https://github.com/PneumaCore/FlutterTask/releases).
+
+#### 2. Enable installation from unknown sources on your Android device.
+
+#### 3. Install the app.
+
+## Screenshots
+
+<p align="center">
+  <img src="assets/documentation/FlutterTask_Screenshots.png" alt="FlutterTask Screenshots" />
+</p>
+
+## License
+
+This project is licensed under MIT License.
+
+## Contact
+
+For any questions or suggestions:
+
+- ✉️ Email: luciamengualr18@gmail.com
